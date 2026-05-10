@@ -19,11 +19,11 @@
 
 | Hero section | Multi Agent System | Conversational Chatbot |
 |---|---|---|
-| ![Hero](./meditwin-ai/images/5.png) | ![Agents](./meditwin-ai/images/3.png) | ![Chatbot](./meditwin-ai/images/4.png) |
+| ![Hero](./docs/images/hero.png) | ![Agents](./docs/images/agents.png) | ![Chatbot](./docs/images/chatbot.png) |
 
 | Imaging triage | Digital Twin Simulation | Multi-mode |
 |---|---|---|
-| ![Imaging](./meditwin-ai/images/2.png) | ![Twin](./meditwin-ai/images/7.png) | ![Drug](./meditwin-ai/images/1.png) |
+| ![Imaging](./docs/images/imaging.png) | ![Twin](./docs/images/twin.png) | ![multi](docs/images/multi.png) |
 
 
 ---
