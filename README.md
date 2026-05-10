@@ -1,4 +1,4 @@
-# 🧠 MediTwin AI — Multi-Agent Clinical Decision Support System
+# 🧠 **MediTwin AI — Multi-Agent Clinical Decision Support System**
 
 > **"What is happening? What will happen next? What should we do?"**
 >
@@ -8,24 +8,23 @@
 
 ---
 
-<!-- 🎬 VIDEO DEMO -->
-<!-- Add your demo video here:
-[![MediTwin Demo](https://img.shields.io/badge/▶_Watch_Demo-YouTube-red?style=for-the-badge&logo=youtube)](YOUR_VIDEO_URL)
--->
+## 🎬 ***VIDEO DEMO***
+<!-- Add your demo video here: -->
+[![MediTwin Demo](https://img.shields.io/badge/▶_Watch_Demo-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/1AOQdB0_hl4?si=oo_gCT8Rk7D9Bf-h)
+
 
 ---
 
 ## 📸 Screenshots
 
-<!-- Add your screenshots here. Example:
-| Landing Page | Orchestrator Pipeline | Conversational Chatbot |
+| Hero section | Multi Agent System | Conversational Chatbot |
 |---|---|---|
-| ![Landing](./docs/screenshots/landing.png) | ![Orchestrator](./docs/screenshots/orchestrator.png) | ![Chatbot](./docs/screenshots/chatbot.png) |
+| ![Hero](./meditwin-ai/images/5.png) | ![Agents](./meditwin-ai/images/3.png) | ![Chatbot](./meditwin-ai/images/4.png) |
 
-| Differential Diagnosis | Digital Twin Simulation | Drug Safety Check |
+| Imaging triage | Digital Twin Simulation | Multi-mode |
 |---|---|---|
-| ![Diagnosis](./docs/screenshots/diagnosis.png) | ![Twin](./docs/screenshots/digital_twin.png) | ![Drug](./docs/screenshots/drug_safety.png) |
--->
+| ![Imaging](./meditwin-ai/images/2.png) | ![Twin](./meditwin-ai/images/7.png) | ![Drug](./meditwin-ai/images/1.png) |
+
 
 ---
 
@@ -76,7 +75,8 @@ Additionally, **Agent 10 — the Conversational Tool Agent** (`:8010`) runs as a
 
 ---
 
-## 🤖 Agent Directory
+
+#  `Agent Directory`
 
 | # | Agent | Port | Type | Technology | Role |
 |---|---|---|---|---|---|
@@ -101,7 +101,7 @@ Additionally, **Agent 10 — the Conversational Tool Agent** (`:8010`) runs as a
 
 ---
 
-## ✨ Key Features
+## ***Key Features***
 
 ### 🏥 Clinical Intelligence
 - **Differential Diagnosis** — Confidence-ranked differentials with ICD-10 codes, supporting/against evidence, and recommended next steps

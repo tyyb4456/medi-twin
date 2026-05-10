@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir --timeout=300 \
+RUN pip install \
     fastapi \
     "uvicorn[standard]" \
     pydantic \

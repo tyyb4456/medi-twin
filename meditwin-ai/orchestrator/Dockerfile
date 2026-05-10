@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies including PostgreSQL checkpoint support
-RUN pip install --no-cache-dir --timeout=300 \
+RUN pip install \
     fastapi \
     "uvicorn[standard]" \
     pydantic \
