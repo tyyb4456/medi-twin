@@ -237,7 +237,7 @@ Direct access to each individual agent via its own dedicated UI page. Each page 
 > Access the deployed frontend application here:
 
 🔗 **Frontend URL:**  
-[meditwin-ui](https://your-frontend-url.com)
+[meditwin-ui](https://medi-twin-zeta.vercel.app)
 
 ##  **Quick Start — Docker (Recommended)**
 
