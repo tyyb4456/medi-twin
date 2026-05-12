@@ -7,6 +7,16 @@ import {
 import AppLayout from "../components/layout/AppLayout";
 import ExplanationHistory from "../components/history/ExplanationHistory";
 
+function useWindowWidth() {
+  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  useEffect(() => {
+    const handler = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+  return width;
+}
+
 const agents = [
   { id: "patient-context", number: "01",  title: "Patient Context Agent", type: "A2A", role: "System Entry Point", description: "Fetches FHIR R4 resources in parallel and normalises them into a unified PatientState that every downstream agent relies on.", capabilities: ["Parallel FHIR R4 fetching", "PatientState normalisation", "Redis caching (10 min TTL)"], icon: UserCheck, color: "#6366F1" },
   { id: "diagnosis", number: "02", title: "Diagnosis Agent", type: "A2A", role: "Differential Diagnosis", description: "Runs retrieval-augmented generation over a medical knowledge base to produce a confidence-ranked differential diagnosis list.", capabilities: ["RAG over ChromaDB", "LLM reasoning (Gemini Flash 2.5)", "Confidence-ranked differentials"], icon: Brain, color: "#8B5CF6" },
@@ -27,7 +37,7 @@ const routeMap = {
   "digital-twin": "/dashboard/microservices/digital-twin",
 };
 
-function AgentCard({ agent, onClick }) {
+function AgentCard({ agent, onClick, isMobile }) {
   const [hovered, setHovered] = useState(false);
   const Icon = agent.icon;
 
@@ -50,7 +60,7 @@ function AgentCard({ agent, onClick }) {
       {/* Color bar */}
       <div style={{ height: 3, background: agent.color, opacity: hovered ? 1 : 0.35, transition: "opacity 0.22s" }} />
 
-      <div style={{ padding: "20px 20px" }}>
+      <div style={{ padding: isMobile ? "16px" : "20px 20px" }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -122,6 +132,9 @@ function AgentCard({ agent, onClick }) {
 
 export default function MicroservicesAgents() {
   const navigate = useNavigate();
+  const width = useWindowWidth();
+  const isMobile = width < 640;
+  const isTablet = width < 1024;
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -132,7 +145,7 @@ export default function MicroservicesAgents() {
   return (
     <AppLayout>
       <div style={{
-        padding: "40px 40px 64px",
+        padding: isMobile ? "24px 16px 48px" : isTablet ? "32px 24px 56px" : "40px 40px 64px",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(14px)",
         transition: "all 0.55s cubic-bezier(0.22,1,0.36,1)",
@@ -157,11 +170,12 @@ export default function MicroservicesAgents() {
         </div>
 
         {/* Agent Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 12, marginBottom: 32 }}>
+        <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, minmax(min(300px, 100%), 1fr))`, gap: isMobile ? 10 : 12, marginBottom: 32 }}>
           {agents.map(agent => (
             <AgentCard
               key={agent.id}
               agent={agent}
+              isMobile={isMobile}
               onClick={() => routeMap[agent.id] && navigate(routeMap[agent.id])}
             />
           ))}
@@ -180,8 +194,11 @@ export default function MicroservicesAgents() {
             style={{
               background: "var(--color-surface)",
               border: "1px solid var(--color-border)",
-              borderRadius: 14, padding: "20px 24px",
-              display: "flex", alignItems: "center", gap: 20,
+              borderRadius: 14, padding: isMobile ? "16px" : "20px 24px",
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
+              alignItems: isMobile ? "flex-start" : "center",
+              gap: isMobile ? 14 : 20,
               transition: "all 0.22s ease", cursor: "default",
             }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = explanationAgent.color + "50"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = `0 8px 24px ${explanationAgent.color}12`; }}
@@ -194,16 +211,29 @@ export default function MicroservicesAgents() {
               <div style={{ width: 36, height: 36, borderRadius: 9, background: explanationAgent.color + "18", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <FileText size={16} strokeWidth={1.75} style={{ color: explanationAgent.color }} />
               </div>
+              {isMobile && (
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--color-text)" }}>{explanationAgent.title}</h3>
+                    <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 20, background: explanationAgent.color + "18", color: explanationAgent.color, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                      {explanationAgent.type}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: 10, color: "var(--color-text-subtle)", fontWeight: 600 }}>:{explanationAgent.port}</span>
+                </div>
+              )}
             </div>
 
             <div style={{ flex: 1 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--color-text)" }}>{explanationAgent.title}</h3>
-                <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 20, background: explanationAgent.color + "18", color: explanationAgent.color, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                  {explanationAgent.type}
-                </span>
-                <span style={{ fontSize: 10, color: "var(--color-text-subtle)", fontWeight: 600 }}>:{explanationAgent.port}</span>
-              </div>
+              {!isMobile && (
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--color-text)" }}>{explanationAgent.title}</h3>
+                  <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 20, background: explanationAgent.color + "18", color: explanationAgent.color, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                    {explanationAgent.type}
+                  </span>
+                  <span style={{ fontSize: 10, color: "var(--color-text-subtle)", fontWeight: 600 }}>:{explanationAgent.port}</span>
+                </div>
+              )}
               <p style={{ fontSize: 12, color: "var(--color-text-muted)", lineHeight: 1.55, fontWeight: 400 }}>{explanationAgent.description}</p>
             </div>
 
