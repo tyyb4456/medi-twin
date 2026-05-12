@@ -7,6 +7,58 @@
 > Orchestrator to answer all three clinical questions in under 12 seconds.
 
 ---
+---
+
+# **Microservices Deployment Architecture**
+
+This project is designed using a **microservices architecture**, where each major service/agent is developed and deployed independently.
+
+Due to the **Railway free tier limitation** (maximum deployments per account), each microservice was separated into its own Git repository and deployed using different GitHub/Google accounts across multiple Railway projects.
+
+This approach provides:
+
+- ✔ Independent deployment for each service  
+- ✔ Better scalability and maintainability  
+- ✔ Isolated environments for debugging and updates  
+- ✔ Modular architecture following real-world production practices  
+
+
+
+---
+
+# `Why Separate Repositories?`
+
+Railway's free tier allows only a limited number of active deployments per account.  
+To continue deploying all services independently, the project was split into multiple repositories and deployed across separate Railway accounts/projects.
+
+This setup simulates a real-world distributed system deployment strategy often used in scalable cloud-native applications.
+
+---
+
+## 🔗 Repository Links
+
+- patient-context-agent: [GitHub](https://github.com/hssn5667/patient-context) | [Railway](https://patient-context-production.up.railway.app)
+- diagnosis-agent: [GitHub](https://github.com/hssn5667/diagnosis) | [Railway](https://railway.app/USERNAME/lab-analysis-agent) 
+- lab-analysis-agent: [GitHub](https://github.com/hssn5667/lab) | [Railway](https://lab-production-9bda.up.railway.app)
+- drug-safety-agent: [GitHub](https://github.com/tyb-art-80/drug) | [Railway](https://drug-production-a7d4.up.railway.app)
+- imaging-triage-agent: [GitHub](https://github.com/tyb-art-80/imaging) | [Railway](https://imaging-production.up.railway.app)
+- digital-twin-agent: [GitHub](https://github.com/tyb-art-80/twin) | [Railway](https://twin-production-708e.up.railway.app)
+- consensus-agent: [GitHub](https://github.com/tybggff398/consensus) | [Railway](https://consensus-production-2fb6.up.railway.app)
+- explanation-agent: [GitHub](https://github.com/tybggff398/explanation-) | [Railway](https://explanation-production.up.railway.app)
+- conversational-agent: [GitHub](https://github.com/tyb-art-80/conversative) | [Railway](https://conversative-production.up.railway.app)
+- orchestrator: [GitHub](https://github.com/tyb-art-80/orchestator) | [Railway](https://orchestator-production-ab58.up.railway.app)
+---
+
+## ☁️ Infrastructure Overview
+
+```text
+Client App
+    │
+    ▼
+API Gateway (Railway)
+    │
+    └── AI Agent Service (Railway)
+```
 
 ## 🎬 ***VIDEO DEMO***
 <!-- Add your demo video here: -->
@@ -29,13 +81,13 @@
 ---
 
 
-## Kaggle Notebook of efficientnetB0 training on chest X-ray dataset (95.5% acc, 99.2% AUC)
+## `Kaggle Notebook of efficientnetB0 training on chest X-ray dataset (95.5% acc, 99.2% AUC)`
 
 🔗 [View the Kaggle Notebook](https://www.kaggle.com/code/danialia/effiencient-performs-well-woohoo)
 
 ---
 
-## 📐 System Architecture
+# **System Architecture**
 
 MediTwin is a **microservices monorepo** composed of two top-level projects:
 
@@ -78,37 +130,37 @@ Browser / Prompt Opinion Platform
   (Condition, DiagnosticReport, MedicationRequest, CarePlan)
 ```
 
-Additionally, **Agent 10 — the Conversational Tool Agent** (`:8010`) runs as a fully independent ReAct LangGraph chatbot with 8 callable tools, PostgreSQL-backed conversation memory, and live SSE streaming.
+Additionally, **Agent 10 — the Conversational Tool Agent** runs as a fully independent ReAct LangGraph chatbot with 8 callable tools, PostgreSQL-backed conversation memory, and live SSE streaming.
 
 ---
 
 
-#  `Agent Directory`
+### ***Agent Directory***
 
-| # | Agent | Port | Type | Technology | Role |
-|---|---|---|---|---|---|
-| 1 | Patient Context | `8001` | A2A | httpx async + Redis | FHIR R4 data enrichment |
-| 2 | Diagnosis | `8002` | A2A | LangChain + ChromaDB + Gemini | RAG differential diagnosis |
-| 3 | Lab Analysis | `8003` | A2A | Rules engine + LOINC | Abnormality detection |
-| 4 | Drug Safety | `8004` | **MCP + A2A** | FDA OpenFDA + RxNav | Drug interaction checking |
-| 5 | Imaging Triage | `8005` | A2A | TensorFlow/Keras EfficientNetB0 | Chest X-ray CNN (95.5% acc) |
-| 6 | Digital Twin | `8006` | A2A | XGBoost (5 models) | Outcome simulation |
-| 7 | Consensus | `8007` | A2A | LangGraph + RAG | Conflict detection & escalation |
-| 8 | Explanation | `8009` | A2A | Gemini 2.5 Flash | SOAP note + FHIR bundle |
-| 9 | Orchestrator | `8000` | LangGraph | StateGraph + PostgreSQL | Pipeline coordinator |
-| 10 | Conversational | `8010` | ReAct | LangGraph + 8 tools + Gemini | Natural language interface |
+| # | Agent | Type | Technology | Role |
+|---|---|---|---|---|
+| 1 | Patient Context | A2A | httpx async + Redis | FHIR R4 data enrichment |
+| 2 | Diagnosis | A2A | LangChain + ChromaDB + Gemini | RAG differential diagnosis |
+| 3 | Lab Analysis | A2A | Rules engine + LOINC | Abnormality detection |
+| 4 | Drug Safety | MCP + A2A | FDA OpenFDA + RxNav | Drug interaction checking |
+| 5 | Imaging Triage | A2A | TensorFlow/Keras EfficientNetB0 | Chest X-ray CNN (95.5% acc) |
+| 6 | Digital Twin | A2A | XGBoost (5 models) | Outcome simulation |
+| 7 | Consensus | A2A | LangGraph + RAG | Conflict detection & escalation |
+| 8 | Explanation | A2A | Gemini 2.5 Flash | SOAP note + FHIR bundle |
+| 9 | Orchestrator | LangGraph | StateGraph + PostgreSQL | Pipeline coordinator |
+| 10 | Conversational | ReAct | LangGraph + 8 tools + Gemini | Natural language interface |
 
 **Infrastructure:**
 
-| Service | Port | Purpose |
-|---|---|---|
-| ChromaDB | `8008` | Vector store for RAG |
-| Redis | `6379` | Patient state cache (10 min TTL) |
-| PostgreSQL | `5432` | LangGraph conversation checkpoints |
+| Service | Purpose |
+|---|---|
+| ChromaDB | Vector store for RAG |
+| Redis | Patient state cache (10 min TTL) |
+| PostgreSQL | LangGraph conversation checkpoints |
 
 ---
 
-## ***Key Features***
+## **Key Features**
 
 ### 🏥 Clinical Intelligence
 - **Differential Diagnosis** — Confidence-ranked differentials with ICD-10 codes, supporting/against evidence, and recommended next steps
@@ -161,25 +213,33 @@ Natural language interface to the Conversational Agent. Ask any clinical questio
 ### 3. 🔧 Microservices Mode (`/dashboard/microservices`)
 Direct access to each individual agent via its own dedicated UI page. Each page connects to the agent's port and exposes its streaming API independently. Useful for testing individual agents or integrating them separately.
 
-### Route Map
+### *Route Map*
 
-| URL | Page | Backend |
-|---|---|---|
-| `/` | Landing Page | — |
-| `/dashboard` | Dashboard — choose a mode | — |
-| `/dashboard/orchestrator` | Full pipeline | `:8000` |
-| `/dashboard/chatbot` | Conversational AI | `:8010` |
-| `/dashboard/microservices` | Agent hub | — |
-| `/dashboard/microservices/patient-context` | Patient Context | `:8001` |
-| `/dashboard/microservices/diagnosis-agent` | Diagnosis (RAG) | `:8002` |
-| `/dashboard/microservices/lab-analysis` | Lab Analysis | `:8003` |
-| `/dashboard/microservices/drug-safety` | Drug Safety (MCP) | `:8004` |
-| `/dashboard/microservices/imaging-triage` | Imaging CNN | `:8005` |
-| `/dashboard/microservices/digital-twin` | Digital Twin | `:8006` |
+| URL | Page |
+|---|---|
+| `/` | Landing Page |
+| `/dashboard` | Dashboard — choose a mode |
+| `/dashboard/orchestrator` | Full pipeline |
+| `/dashboard/chatbot` | Conversational AI |
+| `/dashboard/microservices` | Agent hub |
+| `/dashboard/microservices/patient-context` | Patient Context |
+| `/dashboard/microservices/diagnosis-agent` | Diagnosis (RAG) |
+| `/dashboard/microservices/lab-analysis` | Lab Analysis |
+| `/dashboard/microservices/drug-safety` | Drug Safety (MCP) |
+| `/dashboard/microservices/imaging-triage` | Imaging CNN |
+| `/dashboard/microservices/digital-twin` | Digital Twin |
 
 ---
 
-## 🚀 Quick Start — Docker (Recommended)
+
+# 🌐 **Live Demo**
+
+> Access the deployed frontend application here:
+
+🔗 **Frontend URL:**  
+[meditwin-ui](https://your-frontend-url.com)
+
+##  **Quick Start — Docker (Recommended)**
 
 > **One command brings up the entire stack** — backend, frontend, Redis, ChromaDB, and PostgreSQL.
 
