@@ -55,3 +55,8 @@ asyncpg
 starlette
 
 tensorflow-cpu
+
+# {
+# "fhir_base_url": "https://r4.smarthealthit.org",
+# "patient_id": "7b9146b3-8b1b-4cf9-af36-530d8c4fcf05"
+# }

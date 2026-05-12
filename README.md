@@ -23,8 +23,15 @@
 
 | Imaging triage | Digital Twin Simulation | Multi-mode |
 |---|---|---|
-| ![Imaging](./docs/images/imaging.png) | ![Twin](./docs/images/twin.png) | ![multi](docs/images/multi.png) |
+| ![Imaging](/docs/images/imaging.png) | ![Twin](/docs/images/twin.png) | ![multi](/docs/images/multi.png) |
 
+
+---
+
+
+## Kaggle Notebook of efficientnetB0 training on chest X-ray dataset (95.5% acc, 99.2% AUC)
+
+🔗 [View the Kaggle Notebook](https://www.kaggle.com/code/danialia/effiencient-performs-well-woohoo)
 
 ---
 

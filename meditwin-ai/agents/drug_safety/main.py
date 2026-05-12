@@ -551,7 +551,7 @@ async def _lifespan(app: Starlette):
     await db_close()
 
 
-mcp_asgi = mcp.streamable_http_app()
+mcp_asgi = mcp.sse_app()
 combined_app = Starlette(
     routes=[Mount("/mcp", app=mcp_asgi), Mount("/", app=rest_app)],
     lifespan=_lifespan,

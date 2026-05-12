@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-RUN pip install \
+RUN pip install --no-cache-dir --timeout 1000 \
     fastapi \
     "uvicorn[standard]" \
     pydantic \
@@ -31,3 +31,5 @@ WORKDIR /app/agent
 EXPOSE 8004
 
 CMD ["uvicorn", "main:combined_app", "--host", "0.0.0.0", "--port", "8004"]
+
+# uvicorn main:app --host 0.0.0.0 --port 8004 --forwarded-allow-ips="*" --proxy-headers
